@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Add Task</h1>
+</div>
+
+<div class="container">
+    <form action="{{ url_for('insert_task') }}" method="post">
+        <label for="task_name">Task Name:</label>
+        <input type="text" id="task_name" name="task_name" required>
+
+        <label for="date">Date:</label>
+        <input type="text" id="date" name="date" readonly>
+
+        <label for="skill">Skill:</label>
+        <select id="skill" name="skill" required onchange="checkOther()">
+            {% for skill in skills %}
+                <option value="{{ skill }}">{{ skill }}</option>
+            {% endfor %}
+            <option value="Other">Other</option>
+        </select>
+
+       
+        <input type="text" id="new_skill" name="new_skill" placeholder="New skill" style="display: none;">
+
+        <label for="sub_skill">Sub Skill:</label>
+        <input type="text" id="sub_skill" name="sub_skill">
+
+        <label for="task_type">Task Type:</label>
+        <select id="task_type" name="task_type" required>
+            <option value="Practical">Practical</option>
+            <option value="Theoretical">Theoretical</option>
+            <option value="Self-learning">Self-learning</option>
+        </select>
+
+        <button type="submit">Add Task</button>
+    </form>
+</div>
+
+<script>
+    // JavaScript code to set the current date
+    var currentDate = new Date();
+    var formattedDate = currentDate.toISOString().split('T')[0];
+    document.getElementById('date').value = formattedDate;
+
+    // JavaScript code to enable/disable the 'new_skill' input based on the selected option
+    function checkOther() {
+        var skillDropdown = document.getElementById('skill');
+        var newSkillInput = document.getElementById('new_skill');
+
+        if (skillDropdown.value === 'Other') {
+            newSkillInput.style.display = "block";
+            newSkillInput.value = '';  // Clear the input field when selecting 'Other'
+        } else {
+            newSkillInput.style.display = "none";
+            newSkillInput.value = '';  // Clear the input field when selecting other options
+        }
+    }
+</script>
+
+</body>
+</html>

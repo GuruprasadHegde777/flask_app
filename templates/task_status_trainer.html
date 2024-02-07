@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            width: 42px; /* Add your preferred background color */
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .edit-link {
+            text-decoration: none;
+            color: #3498db;
+            cursor: pointer;
+        }
+
+        .edit-link:hover {
+            text-decoration: underline;
+        }
+
+        .sort-dropdown {
+            margin-left: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a {
+            color: rgb(255, 255, 255);
+            background-color: #3498db;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin: 0 4px;
+        }
+
+        .pagination a.active {
+            background-color: #3498db;
+            color: white;
+        }
+        .back-button{
+            text-decoration: none;
+            color: black;
+        }
+
+        
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar">
+            <a href="{{ url_for('home_page') }}" class="back-button">Home</a>
+        </div>
+    </div>
+
+<div class="container">
+    <h2>Task status</h2>
+    <label for="sortDropdown" class="sort-dropdown">Sort by Date:</label>
+    <select id="sortDropdown">
+        <option value="asc">Oldest</option>
+        <option value="desc">Newest</option>
+    </select>
+    <table>
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th style="width: 40%">Task Name</th>
+                <th>Trainee Name</th>
+                <th>Task Status</th>
+                <th>Feedback</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks_to_show %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ task[3] }}</td>
+                    <td>{{ task[2] }}</td>
+                    <td>{{ task[4] }}</td>
+                    <td>{{ task[5] }}</td>
+                    <td>{{ task[7] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if page > 1 %}
+            <a href="?page={{ page - 1 }}">&laquo; Previous</a>
+        {% endif %}
+        
+        {% if page < total_pages %}
+            <a href="?page={{ page + 1 }}">Next &raquo;</a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Add the sort script -->
+<!-- Add the sort script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const table = document.querySelector('table');
+        const sortDropdown = document.getElementById('sortDropdown');
+
+        function parseDate(dateString) {
+            const [year, month, day] = dateString.split('-');
+            return new Date(year, month - 1, day);
+        }
+
+        function sortTable(order) {
+            const rows = Array.from(table.querySelectorAll('tbody tr'));
+
+            rows.sort((a, b) => {
+                const dateA = parseDate(a.cells[4].textContent);
+                const dateB = parseDate(b.cells[4].textContent);
+
+                if (dateA.getTime() === dateB.getTime()) {
+                    return 0;
+                }
+
+                if (order === 'asc') {
+                    return dateA.getTime() > dateB.getTime() ? 1 : -1;
+                } else {
+                    return dateA.getTime() < dateB.getTime() ? 1 : -1;
+                }
+            });
+
+            table.querySelector('tbody').innerHTML = '';
+            rows.forEach(row => {
+                table.querySelector('tbody').appendChild(row);
+            });
+        }
+
+        sortDropdown.addEventListener('change', function () {
+            const selectedOrder = sortDropdown.value;
+            sortTable(selectedOrder);
+        });
+
+        // Apply background color based on Task Status
+        const cells = table.querySelectorAll('tbody td:nth-child(4)');
+
+        cells.forEach(cell => {
+            if (cell.textContent.trim().toLowerCase() === 'not done' || cell.textContent.trim().toLowerCase() === 'absent') {
+                cell.style.backgroundColor = '#f17c86';
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

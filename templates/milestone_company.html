@@ -1,0 +1,150 @@
+<!-- demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestones Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            width: 42px; /* Add your preferred background color */
+        }
+
+        .back-button {
+            font-size: 16px; /* Adjust the font size as needed */
+            text-decoration: none;
+            color: black; /* Set your preferred text color */
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .add-button {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            float: right;
+            transition: background-color 0.3s ease; /* Adjust as needed */
+        }
+
+        /* Include any additional styles here */
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar">
+            <a href="{{ url_for('home_page') }}" class="back-button">Home</a>
+        </div>
+    </div>
+
+<div class="container">
+    <h2>Milestone Results</h2>
+    <a href="{{ url_for('add_results') }}" class="add-button">Add Results</a><br><br>
+    <label for="filterTraineeName" class="filter-label">Filter by Trainee Name:</label>
+        <select id="filterTraineeName" class="filter-select" onchange="filterTable()">
+            <option value="">All Trainees</option>
+            {% for trainee_name in unique_trainee_names %}
+                <option value="{{ trainee_name }}">{{ trainee_name }}</option>
+            {% endfor %}
+        </select>
+
+    {% if milestones_data %}
+        <table id="milestone">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Milestone</th>
+                    <th>Trainee Name</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for milestone in milestones_data %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ milestone[1] }}</td>
+                        <td>{{ milestone[3] }}</td>
+                        <td>{{ milestone[4] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data found.</p>
+    {% endif %}
+</div>
+<script>
+    function filterTable() {
+        var inputTraineeName, filterTraineeName, table, tr, tdTraineeName, i, txtValueTraineeName;
+        inputTraineeName = document.getElementById("filterTraineeName");
+        filterTraineeName = inputTraineeName.value.toUpperCase();
+        
+        table = document.getElementById("milestone");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            var visible = true;  // Flag to determine if the row should be visible
+
+            // Check the 'Trainee Name' column (index 5) in each row
+            tdTraineeName = tr[i].getElementsByTagName("td")[2];
+            txtValueTraineeName = tdTraineeName.textContent || tdTraineeName.innerText;
+
+            // Check Trainee Name filter
+            if (filterTraineeName !== '' && txtValueTraineeName.toUpperCase().indexOf(filterTraineeName) === -1) {
+                visible = false;
+            }
+
+            // Set the display property based on the 'visible' flag
+            tr[i].style.display = visible ? "" : "none";
+        }
+    }
+</script>
+</body>
+</html>

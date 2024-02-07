@@ -1,0 +1,152 @@
+<!-- demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Data</title>
+    <style>
+        /* Add your styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 40px;
+            color: #333;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            width: 42px; /* Add your preferred background color */
+            
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #link{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar">
+            <a id = 'link' href="{{ url_for('home_page') }}" class="back-button">Home</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Add Extra Task</h2>
+        <form action="{{ url_for('insert_extra_task') }}" method="post">
+            <label for="task_name">Task Name:</label>
+            <input type="text" id="task_name" name="task_name" required>
+    
+            <label for="skill">Skill:</label>
+            <select id="skill" name="skill" required onchange="checkOther()">
+            {% for skill in skills %}
+                <option value="{{ skill }}">{{ skill }}</option>
+            {% endfor %}
+            <option value="Other">Other</option>
+            </select>
+
+       
+            <input type="text" id="new_skill" name="new_skill" placeholder="New skill" style="display: none;">
+    
+            <label for="sub_skill">Sub Skill:</label>
+            <input type="text" id="sub_skill" name="sub_skill" required>
+    
+            <label for="solution">Solution:</label>
+            <textarea id="solution" name="solution" rows="4" required></textarea>
+
+            <label for="no_of_hours">No of Hours:</label>
+            <input type = "number" step="0.1" id="no_of_hours" name="no_of_hours" required>
+    
+            <button type="submit">Add Task</button>
+        </form>
+    </div>
+</body>
+
+<script>
+    
+    // JavaScript code to enable/disable the 'new_skill' input based on the selected option
+    function checkOther() {
+        var skillDropdown = document.getElementById('skill');
+        var newSkillInput = document.getElementById('new_skill');
+
+        if (skillDropdown.value === 'Other') {
+            newSkillInput.style.display = "block";
+            newSkillInput.value = '';  // Clear the input field when selecting 'Other'
+        } else {
+            newSkillInput.style.display = "none";
+            newSkillInput.value = '';  // Clear the input field when selecting other options
+        }
+    }
+</script>
+
+</html>

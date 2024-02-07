@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainee Home</title>
+    
+    <style>
+        body {
+            
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #085486;
+            color: #fff;
+            padding: 5px;
+            text-align: left;
+        }
+
+        #heading{
+            margin-left: 20px;
+        }
+
+        
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            padding: 5px;
+            margin: 5px;
+            background-color: #333;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: #333;
+            padding: 6px;
+            border-radius: 8px;
+            color: #fff;
+            margin: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .menu a:hover {
+            transform: scale(1.1);
+            background-color: #085486;
+        }
+
+        .add-button {
+            text-decoration: none;
+            color: #333;
+            padding: 6px;
+            border-radius: 4px;
+            background-color: #fff;
+            color: #085486;
+            float: right;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            top: 20px;
+            right: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h3 id="heading">Welcome, {{ trainee_name }}</h3>
+    <a href="{{ url_for('logout') }}" class="add-button">Logout</a>
+</div>
+
+<div class="container">
+
+    <div class="menu">
+        <a href="{{ url_for('course_status') }}">Course Status</a>
+        <a href="{{ url_for('demo') }}">Demo</a>
+        <a href="{{ url_for('extra_works') }}">Extra Works</a>
+        <a href="{{ url_for('milestones') }}">Milestone</a>
+        <a href="{{ url_for('projects') }}">Projects</a>
+        <a href="{{ url_for('task_status') }}">Task Status</a>
+        <a href="{{ url_for('feedbacks_by_trainee') }}">Feedback</a>
+        
+        <!-- Add more menu items as needed -->
+    </div>
+
+    <!-- Add your content here -->
+
+</div>
+
+</body>
+</html>

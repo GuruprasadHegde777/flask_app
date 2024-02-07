@@ -1,0 +1,173 @@
+<!-- demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            width: 42px; /* Add your preferred background color */
+        }
+
+        .back-button {
+            font-size: 16px; /* Adjust the font size as needed */
+            text-decoration: none;
+            color: black; /* Set your preferred text color */
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .add-button {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            float: right;
+            transition: background-color 0.3s ease; /* Adjust as needed */
+        }
+        .profile-card {
+            background: linear-gradient(to bottom right, #3498db, #1abc9c);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            width: 400px;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+            margin-left: 30%;
+        }
+
+        .profile-icon {
+            font-size: 72px;
+            margin-bottom: 15px;
+        }
+
+        .profile-name,
+        .profile-title,
+        .profile-info p {
+            margin-bottom: 10px;
+        }
+
+        .profile-name,
+        .profile-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .profile-info p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .editable {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            border-radius: 5px;
+            display: inline-block;
+            width: 80%;
+            margin-left: 10%;
+            box-sizing: border-box;
+            color: black;
+        }
+
+        .update-button {
+            background-color: #2ecc71;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .update-button:hover {
+            background-color: #27ae60;
+        }
+
+        /* Include any additional styles here */
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar">
+            <a href="{{ url_for('home_page') }}" class="back-button">Home</a>
+        </div>
+    </div>
+
+<div class="container">
+    <div class="profile-card">
+        <div class="profile-icon">&#128100;</div>
+        <div class="profile-name" contenteditable="true">John Doe</div>
+        <div class="profile-info">
+            <p>User Type: <span class="editable" contenteditable="false"></span></p>
+            <p>Email: <span class="editable" contenteditable="false"></span></p>
+            <p>Password: <span class="editable" contenteditable="true" id="password"></span></p>
+        </div>
+        <button class="update-button" onclick="updateProfile()">Update Password</button>
+    </div>
+    
+</div>
+<script>
+    function updateProfile() {
+        // Add your update logic here
+        var password = document.getElementById("password").innerText;
+        if (password.length < 6 || password.length > 10) {
+            alert("Password must be between 6 and 10 characters.");
+            return;
+        }
+        alert("Profile Updated!");
+    }
+</script>
+</body>
+</html>

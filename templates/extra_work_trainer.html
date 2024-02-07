@@ -1,0 +1,205 @@
+<!-- extra_works.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extra Works</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #3498db;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            width: 42px; /* Add your preferred background color */
+        }
+
+        .back-button {
+            font-size: 16px; /* Adjust the font size as needed */
+            text-decoration: none;
+            color: black; /* Set your preferred text color */
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            white-space: nowrap;  /* Prevent line breaks in table cells */
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #3498db;
+            color: #fff;
+            box-sizing: content-box;
+        }
+
+        /* Horizontally scrollable container */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        /* Filter button and dropdown */
+        .filter-container {
+            margin-top: 10px;
+        }
+
+        .filter-label {
+            margin-right: 10px;
+        }
+
+        .filter-select {
+            padding: 5px;
+        }
+
+        /* Add this to your CSS styles */
+        .add-button {
+            text-decoration: none;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            background-color: #3498db;
+            color: #fff;
+            float: right;
+            transition: background-color 0.3s ease; /* Adjust as needed */
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="navbar">
+            <a href="{{ url_for('home_page') }}" class="back-button">Home</a>
+        </div>
+    </div>
+
+<div class="container table-container">
+    <h2>Extra Works</h2>
+    
+    <div class="filter-container">
+        <label for="filterTraineeName" class="filter-label">Filter by Trainee Name:</label>
+        <select id="filterTraineeName" class="filter-select" onchange="filterTable()">
+            <option value="">All Trainees</option>
+            {% for trainee_name in unique_trainee_names %}
+                <option value="{{ trainee_name }}">{{ trainee_name }}</option>
+            {% endfor %}
+        </select>
+
+
+        <label for="filterSkill" class="filter-label">Filter by Skill:</label>
+        <select id="filterSkill" class="filter-select" onchange="filterTable()">
+            <option value="">All Skills</option>
+            {% for skill in unique_skills %}
+                <option value="{{ skill }}">{{ skill }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    {% if extra_works_list %}
+        <table id="extraWorksTable">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th style="width: 40%">Task Name</th>
+                    <th>Skill</th>
+                    <th>Sub Skill</th>
+                    <th>Solution</th>
+                    <th>Trainee Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for extra_work in extra_works_list %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td style="width: 40%">{{ extra_work[2] }}</td>
+                        <td>{{ extra_work[1] }}</td>
+                        <td>{{ extra_work[6] }}</td>
+                        <td><a href={{ extra_work[5] }}>Link</a></td>
+                        <td>{{ extra_work[3] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No data found.</p>
+    {% endif %}
+</div>
+
+<script>
+    function filterTable() {
+        var inputTraineeName, inputSkill, filterTraineeName, filterSkill, table, tr, tdTraineeName, tdSkill, i, txtValueTraineeName, txtValueSkill;
+        inputTraineeName = document.getElementById("filterTraineeName");
+        filterTraineeName = inputTraineeName.value.toUpperCase();
+        
+        inputSkill = document.getElementById("filterSkill");
+        filterSkill = inputSkill.value.toUpperCase();
+        
+        table = document.getElementById("extraWorksTable");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 1; i < tr.length; i++) {
+            var visible = true;  // Flag to determine if the row should be visible
+
+            // Check the 'Trainee Name' column (index 5) in each row
+            tdTraineeName = tr[i].getElementsByTagName("td")[5];
+            txtValueTraineeName = tdTraineeName.textContent || tdTraineeName.innerText;
+
+            // Check the 'Skill' column (index 2) in each row
+            tdSkill = tr[i].getElementsByTagName("td")[2];
+            txtValueSkill = tdSkill.textContent || tdSkill.innerText;
+
+            // Check Trainee Name filter
+            if (filterTraineeName !== '' && txtValueTraineeName.toUpperCase().indexOf(filterTraineeName) === -1) {
+                visible = false;
+            }
+
+            // Check Skill filter
+            if (filterSkill !== '' && txtValueSkill.toUpperCase().indexOf(filterSkill) === -1) {
+                visible = false;
+            }
+
+            // Set the display property based on the 'visible' flag
+            tr[i].style.display = visible ? "" : "none";
+        }
+    }
+
+
+</script>
+
+
+</body>
+</html>

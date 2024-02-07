@@ -1009,19 +1009,12 @@ def logout():
     return response
 
 
-@app.route('/data_from_flask')
-def get_data():
-    # Retrieve data from your backend (replace with actual data)
-    labels = ['A', 'B', 'C', 'D', 'E']
-    values = [10, 20, 30, 40, 50]
-
-    # Return the data as JSON
-    return jsonify(labels=labels, values=values)
-
-
 @app.route('/show')
 def show():
     return render_template('testing_charts.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Retrieve the port number from the environment variable PORT, defaulting to 5000 if not set
+    port = int(os.environ.get('PORT', 5000))
+    # Run the app, binding to the specified port
+    app.run(host='0.0.0.0', port=port)
